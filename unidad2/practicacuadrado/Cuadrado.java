@@ -44,7 +44,7 @@ public class Cuadrado {
     public Cuadrado fusionar(Cuadrado c) {
         //Verificar las colisiones
         boolean colisiona = false;
-        Punto[] veriticesDeThis=obtenerVertices(this);
+        //Punto[] veriticesDeThis=obtenerVertices(this);
         Punto[] veriticesDeC=obtenerVertices(c);
         
         
@@ -66,7 +66,35 @@ public class Cuadrado {
     }
     
     private Punto[] obtenerVertices(Cuadrado c){
-    
+        int[] nombre=new int[10];
+        Punto[] vertices=new Punto[4];
+        //0 Inferior izquierdo VII (ya está definido en el atributo)
+        vertices[0]=c.verticeInfIzq;
+        //1 Superior izquierdo VSI, la X es la misma que la X de VII y la Y se le debe sumar lado a la Y de VII
+        //Punto vertice=new Punto(x,y);
+        vertices[1]=new Punto(vertices[0].getX(),c.verticeInfIzq.getY()+c.lado);
+        //2 Superior derecho VSD, la X se obtiene sumando lado a la X de VII, la Y será la misma que la de VSI
+        vertices[2]=new Punto(c.verticeInfIzq.getX()+c.getLado(),vertices[1].getY());
+        //3 Inferior derecho VID, la X es la misma que la de VSD y la Y es la misma que la de VII
+        vertices[3]=new Punto(vertices[2].getX(), vertices[0].getY());
+        return vertices;
     } 
+    
+    private boolean colisiona(Punto[] vertices){
+        int x1=this.verticeInfIzq.getX(),
+                x2=x1+this.lado,
+                y1=this.verticeInfIzq.getY(),
+                y2=y1+this.lado;
+        
+        for (int i = 0; i < 4; i++) {
+            if(vertices[i].getX()>=x1 && vertices[i].getX()<=x2 &&
+                vertices[i].getY()>=y1 && vertices[i].getY()<=y2){
+                //vertice i colisiona o se toca con this
+                return true;
+            }
+        }
+        //Termina de revisar todos y no colisionan
+        return false;        
+    }
 
 }
